@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdamW vs Gradient Descent | Technical Article</title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <!-- Highlight.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+
+    <!-- Marked for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- KaTeX JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- Optional: jQuery for easier DOM manipulation -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    <button class="menu-toggle">☰</button>
+    <div class="sidebar-overlay"></div>
+    <div class="layout">
+        <nav id="sidebar"></nav>
+        <main id="content"></main>
+    </div>
+
+    <script>
+        // Mobile menu functionality
+        document.querySelector('.menu-toggle').addEventListener('click', function () {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        });
+
+        // Close sidebar when clicking overlay
+        document.querySelector('.sidebar-overlay').addEventListener('click', function () {
+            document.getElementById('sidebar').classList.remove('active');
+            document.querySelector('.sidebar-overlay').classList.remove('active');
+        });
+
+        // Close sidebar when selecting an article on mobile
+        document.getElementById('sidebar').addEventListener('click', function (e) {
+            if (e.target.classList.contains('sidebar-link') && window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('active');
+                document.querySelector('.sidebar-overlay').classList.remove('active');
+            }
+        });
+    </script>
+
+    <script>
+        // Function to get article filename from URL or default to first article
+        function getArticleFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('article') || 'adamw.md';
+        }
+
+        // Load article list and populate sidebar
+        async function loadArticleList() {
+            try {
+                const response = await fetch('articles.json');
+                const articles = await response.json();
+
+                const sidebar = document.getElementById('sidebar');
+                articles.forEach(article => {
+                    const link = document.createElement('a');
+                    link.href = `?article=${article.file}`;
+                    link.textContent = article.title;
+                    link.className = 'sidebar-link';
+                    if (getArticleFromUrl() === article.file) {
+                        link.classList.add('active');
+                    }
+                    sidebar.appendChild(link);
+                });
+            } catch (error) {
+                console.error('Error loading article list:', error);
+            }
+        }
+
+        // Load and render article content
+        async function loadArticle(filename) {
+            try {
+                const response = await fetch(`articles/${filename}`);
+                const markdown = await response.text();
+
+                // Convert markdown to HTML
+                const html = marked.parse(markdown);
+                document.getElementById('content').innerHTML = html;
+
+                // Render LaTeX and syntax highlighting
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        { left: "$$", right: "$$", display: true },
+                        { left: "$", right: "$", display: false }
+                    ],
+                    throwOnError: false,
+                    output: 'html'
+                });
+
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightBlock(block);
+                });
+            } catch (error) {
+                console.error('Error loading article:', error);
+            }
+        }
+
+        // Initialize
+        loadArticleList();
+        loadArticle(getArticleFromUrl());
+
+        // Handle navigation without page reload
+        window.addEventListener('popstate', () => {
+            loadArticle(getArticleFromUrl());
+        });
+    </script>
+</body>
+
+</html>

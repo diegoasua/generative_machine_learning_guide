@@ -1,0 +1,14 @@
+[
+    {
+        "title": "AdamW vs Gradient Descent",
+        "file": "adamw.md"
+    },
+    {
+        "title": "Mixed Precision Computation in PyTorch",
+        "file": "mixedprecisionpytorch.md"
+    },
+    {
+        "title": "Transfer Learning in Computer Vision",
+        "file": "transferlearningincomputervision.md"
+    }
+]

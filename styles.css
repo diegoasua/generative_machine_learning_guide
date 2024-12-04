@@ -1,0 +1,171 @@
+:root {
+    /* Updated color palette for a more modern look */
+    --primary-color: #37352f;
+    --text-color: #37352f;
+    --background-color: #ffffff;
+    --secondary-background: #f7f6f3;
+    --sidebar-width: 250px;
+    --sidebar-background: #fbfbfa;
+    --accent-color: #2eaadc;
+    --hover-background: #efefef;
+    --text-light: #6b6b6b;
+}
+
+/* Layout */
+.layout {
+    display: flex;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1000;
+    padding: 0.5rem;
+    background: var(--background-color);
+    border: 1px solid var(--hover-background);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#sidebar {
+    width: var(--sidebar-width);
+    background: var(--sidebar-background);
+    padding: 2.5rem 0.8rem;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease-in-out;
+}
+
+#content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    padding: 2rem 3rem;
+    max-width: 1000px;
+    /* Increased from 800px */
+}
+
+/* Sidebar Navigation */
+.sidebar-link {
+    display: block;
+    padding: 0.5rem 0.8rem;
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: 3px;
+    margin-bottom: 0.2rem;
+    transition: all 0.15s ease-in-out;
+    font-size: 0.95rem;
+    font-weight: 450;
+}
+
+.sidebar-link:hover {
+    background-color: var(--hover-background);
+    color: var(--text-color);
+}
+
+.sidebar-link.active {
+    background-color: var(--hover-background);
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 0;
+    /* Removed max-width and adjusted margin */
+    padding: 0;
+    /* Adjusted padding */
+    background-color: var(--background-color);
+}
+
+h1,
+h2,
+h3 {
+    color: var(--primary-color);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+}
+
+h3 {
+    font-size: 1.3rem;
+}
+
+.math-block {
+    overflow-x: auto;
+    padding: 1rem;
+    background-color: var(--secondary-background);
+    border-radius: 4px;
+    margin: 1rem 0;
+}
+
+p {
+    margin: 1rem 0;
+}
+
+ul,
+ol {
+    padding-left: 2rem;
+}
+
+.references {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ddd;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    #sidebar {
+        transform: translateX(-100%);
+        z-index: 999;
+    }
+
+    #sidebar.active {
+        transform: translateX(0);
+    }
+
+    #content {
+        margin-left: 0;
+        padding: 1rem;
+        padding-top: 4rem;
+        /* Add space for menu button */
+        max-width: 100%;
+    }
+
+    /* Overlay when sidebar is open */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+}
