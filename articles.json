@@ -10,5 +10,13 @@
     {
         "title": "Transfer Learning in Computer Vision",
         "file": "transferlearningincomputervision.md"
+    },
+    {
+        "title": "Data Leakage in Machine Learning: Detection, Prevention, and Mitigation",
+        "file": "dataleakage.md"
+    },
+    {
+        "title": "Implementing Diffusion Models in PyTorch",
+        "file": "diffusion.md"
     }
 ]
